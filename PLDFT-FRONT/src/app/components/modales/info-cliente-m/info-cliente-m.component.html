@@ -1,0 +1,15 @@
+<mat-dialog-content class="mat-typography">
+    <div class="container">
+      <h1>Política de Conocimiento del Cliente y del Usuario</h1>
+  
+      <h2>Información del Cliente</h2>
+      <p><strong>Nombre:</strong> {{ data.razon_social }}</p>
+      <p><strong>Giro mercantil:</strong> {{ data.giro }}</p>
+      <p><strong>Status:</strong> {{ data.estatus ? 'Activo' : 'Inactivo' }}</p>
+      <p><strong>RFC:</strong> {{ data.rfc }}</p>
+      <p><strong>Nacionalidad:</strong>  {{ (data.domicilio_cl_moral | parseJson)?.[0].nacionalidad }}</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CERRAR</button>
+  </mat-dialog-actions>

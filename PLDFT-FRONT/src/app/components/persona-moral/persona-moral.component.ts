@@ -13,7 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc'; // Servicio de autenticació
 import { ParseJsonPipe } from '../../parse-json.pipe'; // Pipe personalizado para parsear JSON
 import { ApiService } from '../../service/api.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { InfoClienteComponent } from '../modales/info-cliente/info-cliente.component';
+import { InfoClienteMComponent } from '../modales/info-cliente-m/info-cliente-m.component';
 
 // Agrupación de módulos de Material para facilitar la importación
 const MATERIAL_MODULES = [
@@ -53,6 +53,7 @@ export class PersonaMoralComponent implements OnInit, AfterViewInit {
     'fecha_const',
     'representante',
     'completitud',
+    'action'
   ];
 
   dataSourceClientesM = new MatTableDataSource<any>();
@@ -158,16 +159,16 @@ export class PersonaMoralComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-  // Muestra un modal con información del cliente
-  mostrarInfo() {
-    const dialogRef = this.dialog.open(InfoClienteComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        this.oauthService.logOut();
-      }
+  
+  abrirModal(cliente: any) {
+    const dialogRef = this.dialog.open(InfoClienteMComponent, {
+        data: cliente  // Pasa la información del cliente al modal
     });
-  }
+
+    dialogRef.afterClosed().subscribe(result => {
+        // Opcional: puedes manejar el resultado cuando se cierre el modal
+        console.log('Modal cerrado', result);
+    });
+}
 
 }

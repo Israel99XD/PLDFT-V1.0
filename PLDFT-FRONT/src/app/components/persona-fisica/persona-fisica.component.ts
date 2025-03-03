@@ -54,6 +54,7 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
     'telefono',
     'correo',
     'completitud',
+    'action'
   ];
 
   // Fuente de datos para las tablas de Persona Física y Persona Moral
@@ -174,6 +175,18 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
         }
       });
     }
+
+    abrirModal(cliente: any) {
+      const dialogRef = this.dialog.open(InfoClienteComponent, {
+          data: cliente  // Pasa la información del cliente al modal
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+          // Opcional: puedes manejar el resultado cuando se cierre el modal
+          console.log('Modal cerrado', result);
+      });
+  }
+  
 
 
 }
