@@ -1,0 +1,61 @@
+<div *ngIf="cargando" class="loading-overlay">
+    <mat-spinner></mat-spinner>
+  </div>  
+<h2>TRANSACCIONES</h2>
+<div class="container mt-2 mb-5">
+    <mat-form-field>
+        <mat-label>FILTRO DE TRANSACCIONES</mat-label>
+        <input matInput (keyup)="applyFilter($event, 'transacciones')" placeholder="BUSCAR POR MONTO Y FECHA" #inputUser
+            aria-label="Filtro de transacciones" />
+    </mat-form-field>
+
+    <div class="mat-elevation-z8 table-responsive">
+        <table mat-table [dataSource]="dataSourceTransacciones" matSort class="custom-table">
+            <!-- Clave Movimiento -->
+            <ng-container matColumnDef="cveMovimiento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    CLAVE MOVIMIENTO
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.cveMovimiento }}</td>
+            </ng-container>
+
+            <!-- Monto -->
+            <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO</th>
+                <td mat-cell *matCellDef="let row">$ {{ row.monto }}</td>
+            </ng-container>
+
+            <!-- Tipo de Movimiento -->
+            <ng-container matColumnDef="descTipoMov">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    TIPO DE MOVIMIENTO
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.descTipoMov }}</td>
+            </ng-container>
+
+            <!-- Fecha de Operación -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    FECHA DE OPERACIÓN
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.fecha }}
+                </td>
+            </ng-container>
+
+            <!-- Encabezado y Filas -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsTransacciones"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsTransacciones"></tr>
+
+            <!-- Mensaje cuando no hay datos -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">
+                    NO HAY DATOS QUE COINCIDAN CON EL FILTRO "{{ inputUser.value }}"
+                </td>
+            </tr>
+        </table>
+        <!-- Paginador -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons aria-label="Paginador de transacciones">
+        </mat-paginator>
+    </div>
+</div>

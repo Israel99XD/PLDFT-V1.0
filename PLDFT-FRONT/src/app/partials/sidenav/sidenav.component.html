@@ -1,0 +1,46 @@
+<div class="bg-light d-none d-md-block text-center ">
+  <img src="LOGO2.png" alt="Logo PLD/FT" class="logonav mb-2" />
+  <ul class="list-unstyled">
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="bt"> CLIENTES </mat-expansion-panel-header>
+        <button class="w-100 mb-3 " style="all: unset; cursor: pointer;" (click)="navegar('1')">
+          <mat-icon>account_circle</mat-icon>
+          PERSONA FISICA
+        </button>
+
+        <button class="w-100 mb-3 bt" style="all: unset; cursor: pointer;" (click)="navegar('2')">
+          <mat-icon>business</mat-icon>
+          PERSONA MORAL
+        </button>
+
+        <button class="w-100 mb-3 bt" style="all: unset; cursor: pointer;" (click)="navegar('3')">
+          <mat-icon>trending_up</mat-icon>
+          MOVIMIENTOS
+        </button>
+        <button class="w-100 mb-3 bt" style="all: unset; cursor: pointer;" (click)="navegar('4')">
+          <mat-icon>analytics</mat-icon>
+          TRANSACCIONES
+        </button>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ul>
+</div>
+<div class="footer-fixed bg-light d-md-block text-center">
+  <mat-card class="card-cliente text-center">
+    <mat-card-header class="w-100 d-flex justify-content-center">
+      <h1 class="m-0 mb-3">CLIENTES</h1>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="text-center">
+        <mat-card-subtitle>Conteo de Clientes Físicos</mat-card-subtitle>
+        Total de clientes: <strong>{{ totalClientesFisicos }}</strong>
+      </p>
+      <p class="text-center">
+        <mat-card-subtitle>Conteo de Clientes Morales</mat-card-subtitle>
+        Total de clientes: <strong>{{ totalClientesMorales }}</strong>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
+

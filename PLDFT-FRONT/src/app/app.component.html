@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+
+<div class="container-fluid d-flex flex-column">
+  <div class="row flex-grow-1">
+    <!-- Sidebar - Columna izquierda -->
+    <app-sidenav class="col-12 col-md-2 bg-light"></app-sidenav>
+
+    <!-- Contenido principal - Columna derecha -->
+    <div class="col-12 col-md-10 mtb-5">
+
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

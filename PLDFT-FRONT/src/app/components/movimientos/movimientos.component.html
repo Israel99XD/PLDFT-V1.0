@@ -1,0 +1,48 @@
+<div *ngIf="cargando" class="loading-overlay">
+  <mat-spinner></mat-spinner>
+</div> 
+<div class="container mt-4 mb-5 text-center">
+  <h1>MOVIMIENTOS</h1>
+  <mat-form-field>
+    <mat-label>FILTRO DE MOVIMIENTOS DEL USUARIO</mat-label>
+    <input matInput (keyup)="applyFilter($event, 'movimientos')"
+      placeholder="BUSCAR POR SALDO, DESCUENTO DEL MOVIMIENTO" #inputUser />
+  </mat-form-field>
+  <div class="mat-elevation-z8 table-responsive">
+    <table mat-table [dataSource]="dataSourceMovimientos" matSort class="custom-table">
+      <ng-container matColumnDef="movimientoID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.movimientoID }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cveMovimiento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          CVE MOVIMIENTO
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.cveMovimiento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="descMovimiento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          DESCRIPCIÓN DEL MOVIMIENTO
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.descMovimiento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="saldo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>SALDO</th>
+        <td mat-cell *matCellDef="let row">$ {{ row.saldo }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsMovimientos"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsMovimientos"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="7">
+          NO HAY DATOS QUE COINCIDAN CON EL FILTRO "{{ inputUser.value }}"
+        </td>
+      </tr>
+    </table>
+    <mat-paginator #paginatorClientesM [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+.bg-light {
+  position: sticky;
+  top: 0; /* Esto asegura que el sidebar se quede fijo en la parte superior del contenedor */
+  z-index: 1000; /* Asegura que el sidebar se quede por encima de otros elementos */
+}
+
+.menu-np {
+  font-size: 15px;
+}
+
+.B-1 {
+  font-size: 13px;
+}
+
+
+.title-table{
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+
+}
+
+.mat-expansion-panel-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(192, 192, 192);
+}
+.mat-expansion-panel{
+  background-color: rgb(192, 192, 192);
+}
+  .logonav {
+    width: 180px;
+    margin-right: 10px;
+  }
+
+  .card-cliente {
+    text-align: center;
+  }
+  
+
+  
