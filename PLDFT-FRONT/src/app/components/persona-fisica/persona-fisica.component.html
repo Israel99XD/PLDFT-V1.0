@@ -99,7 +99,6 @@
                             <button mat-raised-button color="primary" (click)="abrirModal(row)">Ver Información</button>
                         </td>
                     </ng-container>
-                    
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumnsClientes"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumnsClientes"></tr>
@@ -115,7 +114,6 @@
             </div>
         </div>
     </div>
-
     <!-- Paginador fuera del div de la tabla -->
     <mat-paginator #paginatorClientes [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 </div>

@@ -1,6 +1,5 @@
 // Importaciones necesarias de Angular y Material
 import { CommonModule } from '@angular/common'; // Módulo común de Angular
-import { HttpClient } from '@angular/common/http'; // Cliente HTTP para peticiones API
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'; // Servicio para manejar diálogos de Material
@@ -75,7 +74,7 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.obtenerClientes();
   }
-  
+
 
   // Método que se ejecuta después de que la vista se ha inicializado
   ngAfterViewInit() {
@@ -115,7 +114,7 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
   // Filtra los resultados en la tabla según el tipo de cliente
   applyFilter(event: Event, tipo: string) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if (this.clientes) {
+    if (tipo === 'clientes') {
       this.dataSourceClientes.filter = filterValue.trim().toLowerCase();
       if (this.dataSourceClientes.paginator) {
         this.dataSourceClientes.paginator.firstPage();
@@ -165,28 +164,17 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
     });
   }
 
-    // Muestra un modal con información del cliente
-    mostrarInfo() {
-      const dialogRef = this.dialog.open(InfoClienteComponent);
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result === true) {
-          this.oauthService.logOut();
-        }
-      });
-    }
+  abrirModal(cliente: any) {
+    const dialogRef = this.dialog.open(InfoClienteComponent, {
+      data: cliente  // Pasa la información del cliente al modal
+    });
 
-    abrirModal(cliente: any) {
-      const dialogRef = this.dialog.open(InfoClienteComponent, {
-          data: cliente  // Pasa la información del cliente al modal
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-          // Opcional: puedes manejar el resultado cuando se cierre el modal
-          console.log('Modal cerrado', result);
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      // Opcional: puedes manejar el resultado cuando se cierre el modal
+      console.log('Modal cerrado', result);
+    });
   }
-  
+
 
 
 }

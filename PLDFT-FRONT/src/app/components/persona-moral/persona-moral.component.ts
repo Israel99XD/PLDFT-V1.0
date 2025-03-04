@@ -159,16 +159,16 @@ export class PersonaMoralComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
+
   abrirModal(cliente: any) {
     const dialogRef = this.dialog.open(InfoClienteMComponent, {
-        data: cliente  // Pasa la información del cliente al modal
+      data: cliente  // Pasa la información del cliente al modal
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        // Opcional: puedes manejar el resultado cuando se cierre el modal
-        console.log('Modal cerrado', result);
+      // Opcional: puedes manejar el resultado cuando se cierre el modal
+      console.log('Modal cerrado', result);
     });
-}
+  }
 
 }

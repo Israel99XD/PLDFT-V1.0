@@ -10,26 +10,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  // Método para obtener los movimientos de clientes
-  getMovimientos(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get(`${this.baseUrl}/getMovimientos`, { headers });
-  }
-
-    // Método para obtener las transacciones
-    getTransacciones(): Observable<any> {
-      const token = localStorage.getItem('token');
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-  
-      return this.http.get(`${this.baseUrl}/getTransacciones`, { headers });
-    }
-
   // Método para obtener los datos de un cliente específico
   getClienteData(codigo: string, perfil: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -48,6 +28,26 @@ export class ApiService {
     });
 
     return this.http.get(`${this.baseUrl}/getClientesM/${codigo}/${perfil}`, { headers });
+  }
+
+  // Método para obtener los movimientos de clientes
+  getMovimientos(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get(`${this.baseUrl}/getMovimientos`, { headers });
+  }
+
+  // Método para obtener las transacciones
+  getTransacciones(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get(`${this.baseUrl}/getTransacciones`, { headers });
   }
 
   // **Nuevo método para contar clientes por perfil**

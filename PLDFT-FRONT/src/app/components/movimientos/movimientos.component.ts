@@ -104,6 +104,4 @@ export class MovimientosComponent implements OnInit, AfterViewInit {
       }
     }
 
-
-
 }
