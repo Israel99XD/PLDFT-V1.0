@@ -28,6 +28,7 @@ const MATERIAL_MODULE = [
   imports: [MATERIAL_MODULE],
   template: `
     <mat-toolbar>
+    <img src="LOGO2.png" alt="Logo PLD/FT" class="logonav mb-2" />
       <!-- Espaciador para separar los íconos -->
       <span class="spacer"></span>
 
@@ -39,7 +40,7 @@ const MATERIAL_MODULE = [
 
       <!-- Botón de menú hamburguesa para pantallas pequeñas -->
       <button mat-icon-button [matMenuTriggerFor]="menu" class="mobile-menu-button">
-        <mat-icon>menu</mat-icon>
+        <mat-icon><span class="material-symbols-outlined">account_circle</span></mat-icon>
       </button>
     </mat-toolbar>
 
@@ -99,6 +100,13 @@ const MATERIAL_MODULE = [
         margin-left: auto;
       }
     }
+
+    @media (min-width: 768px) {
+      .logonav {
+        display: none;
+      }
+    }
+
   `,
 })
 export class NavbarComponent {

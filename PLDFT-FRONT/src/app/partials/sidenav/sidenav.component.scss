@@ -1,7 +1,9 @@
 .bg-light {
   position: sticky;
-  top: 0; /* Esto asegura que el sidebar se quede fijo en la parte superior del contenedor */
-  z-index: 1000; /* Asegura que el sidebar se quede por encima de otros elementos */
+  top: 0;
+  /* Esto asegura que el sidebar se quede fijo en la parte superior del contenedor */
+  z-index: 1000;
+  /* Asegura que el sidebar se quede por encima de otros elementos */
 }
 
 .menu-np {
@@ -13,8 +15,8 @@
 }
 
 
-.title-table{
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+.title-table {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 14px;
@@ -27,17 +29,36 @@
   align-items: center;
   background-color: rgb(192, 192, 192);
 }
-.mat-expansion-panel{
+
+.mat-expansion-panel {
   background-color: rgb(192, 192, 192);
 }
+
+.logonav {
+  width: 100%;
+  max-width: 180px; /* Tamaño máximo */
+  height: auto; /* Mantiene la proporción */
+  transition: width 0.3s ease-in-out; /* Suaviza el cambio de tamaño */
+}
+
+.card-cliente {
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
   .logonav {
-    width: 180px;
-    margin-right: 10px;
+    max-width: 150px; /* Se reduce en pantallas medianas */
   }
+}
 
-  .card-cliente {
-    text-align: center;
+@media (max-width: 768px) {
+  .logonav {
+    max-width: 120px; /* Se reduce aún más en pantallas pequeñas */
   }
-  
+}
 
-  
+@media (max-width: 480px) {
+  .logonav {
+    max-width: 90px; /* Se adapta en móviles */
+  }
+}

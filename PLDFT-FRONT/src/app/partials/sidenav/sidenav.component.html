@@ -1,4 +1,26 @@
-<div class="bg-light d-none d-md-block text-center ">
+<!-- Botón para abrir menú en móviles (Visible en pantallas pequeñas) -->
+<button mat-button [matMenuTriggerFor]="menu" class="d-md-none">
+  <mat-icon>menu</mat-icon> Menu
+</button>
+
+<!-- Menú colapsado en pantallas pequeñas -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="navegar('1')">
+    <mat-icon>account_circle</mat-icon> Persona Física
+  </button>
+  <button mat-menu-item (click)="navegar('2')">
+    <mat-icon>business</mat-icon> Persona Moral
+  </button>
+  <button mat-menu-item (click)="navegar('3')">
+    <mat-icon>trending_up</mat-icon> Movimientos
+  </button>
+  <button mat-menu-item (click)="navegar('4')">
+    <mat-icon>analytics</mat-icon> Transacciones
+  </button>
+</mat-menu>
+
+<!-- Sidebar (Visible solo en pantallas medianas y grandes) -->
+<div class="bg-light d-none d-md-block text-center">
   <img src="LOGO2.png" alt="Logo PLD/FT" class="logonav mb-2" />
   <ul class="list-unstyled">
     <mat-accordion class="example-headers-align" multi>
@@ -8,12 +30,10 @@
           <mat-icon>account_circle</mat-icon>
           PERSONA FISICA
         </button>
-
         <button class="w-100 mb-3 bt" style="all: unset; cursor: pointer;" (click)="navegar('2')">
           <mat-icon>business</mat-icon>
           PERSONA MORAL
         </button>
-
         <button class="w-100 mb-3 bt" style="all: unset; cursor: pointer;" (click)="navegar('3')">
           <mat-icon>trending_up</mat-icon>
           MOVIMIENTOS
@@ -25,21 +45,21 @@
       </mat-expansion-panel>
     </mat-accordion>
   </ul>
-</div>
-<div class="footer-fixed bg-light d-md-block text-center">
-  <mat-card class="card-cliente text-center">
-    <mat-card-header class="w-100 d-flex justify-content-center">
-      <h1 class="m-0 mb-3">CLIENTES</h1>
-    </mat-card-header>
-    <mat-card-content>
-      <p class="text-center">
-        <mat-card-subtitle>Conteo de Clientes Físicos</mat-card-subtitle>
-        Total de clientes: <strong>{{ totalClientesFisicos }}</strong>
-      </p>
-      <p class="text-center">
-        <mat-card-subtitle>Conteo de Clientes Morales</mat-card-subtitle>
-        Total de clientes: <strong>{{ totalClientesMorales }}</strong>
-      </p>
-    </mat-card-content>
-  </mat-card>
+  <div class="footer-fixed bg-light d-md-block text-center">
+    <mat-card class="card-cliente text-center">
+      <mat-card-header class="w-100 d-flex justify-content-center">
+        <h1 class="m-0 mb-3">CLIENTES</h1>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="text-center">
+          <mat-card-subtitle>Conteo de Clientes Físicos</mat-card-subtitle>
+          Total de clientes: <strong>{{ totalClientesFisicos }}</strong>
+        </p>
+        <p class="text-center">
+          <mat-card-subtitle>Conteo de Clientes Morales</mat-card-subtitle>
+          Total de clientes: <strong>{{ totalClientesMorales }}</strong>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
