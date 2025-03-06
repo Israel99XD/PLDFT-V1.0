@@ -9,6 +9,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle }
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 const ANGULAR_MODULES = [
@@ -22,7 +23,8 @@ const ANGULAR_MODULES = [
   MatCardSubtitle,
   MatDividerModule,
   MatIconModule,
-  MatListModule
+  MatListModule,
+  MatMenuModule
 
 ]
 
@@ -99,6 +101,4 @@ export class SidenavComponent {
       },
     });
   }
-
-  
 }
