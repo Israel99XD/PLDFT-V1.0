@@ -58,10 +58,19 @@ export class ApiService {
     });
 
     return this.http.get(
-      `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`,
-      {
-        headers,
-      }
-    );
+      `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`, { headers, });
   }
+
+   // **Nuevo método para el perfil transaccional**
+   getPerfilT(codigo: string, perfil: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get(
+      `${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, { headers, });
+  }
+
+
 }

@@ -111,6 +111,35 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /* Obtiene la lista de clientes Persona Física desde el servicio
+  obtenerPerfilT() {
+    this.cargando = true; // Activar spinner
+ 
+    // Ejemplo: Obtener codigo y perfil con espacio incluido
+    const codigo = '0';
+    const perfil = '268';
+ 
+    // Llamada a la API pasando los parámetros
+    this.clienteService.getPerfilT(codigo, perfil).subscribe({
+      next: (data) => {
+        if (data[0] && typeof data[0].personaFisica === 'string') {
+          const personaFisicaArray = JSON.parse(data[0].personaFisica);
+          this.clientes = personaFisicaArray;
+          console.log(personaFisicaArray);
+          this.dataSourceClientes.data = this.clientes;
+          this.jsonCompleto = data;
+        } else {
+          console.error('El campo personaFisica no es un string válido o no existe.');
+        }
+        this.cargando = false; // Desactivar spinner
+      },
+      error: (error) => {
+        console.error('Error al obtener clientes:', error);
+        this.cargando = false; // Desactivar spinner en caso de error
+      },
+    });
+  }
+*/
   // Filtra los resultados en la tabla según el tipo de cliente
   applyFilter(event: Event, tipo: string) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -165,16 +194,14 @@ export class PersonaFisicaComponent implements OnInit, AfterViewInit {
   }
 
   abrirModal(cliente: any) {
+    console.log('Abriendo modal con datos:', cliente); // Verifica los datos antes de abrir
     const dialogRef = this.dialog.open(InfoClienteComponent, {
-      data: cliente  // Pasa la información del cliente al modal
+      data: cliente
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
-      // Opcional: puedes manejar el resultado cuando se cierre el modal
-      console.log('Modal cerrado', result);
+      console.log('Modal cerrado con resultado:', result);
     });
   }
-
-
-
+  
 }
