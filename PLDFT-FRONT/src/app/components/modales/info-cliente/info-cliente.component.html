@@ -4,12 +4,14 @@
 
     <h2>Información del Cliente</h2>
     <p><strong>Nombre:</strong> {{ data.nombre_cl }}</p>
-    <p><strong>Numero de Cliente:</strong> {{ data.numero_cliente }}</p>
+    <p><strong>Número de Cliente:</strong> {{ data.numero_cliente }}</p>
     <p><strong>Status:</strong> {{ data.estatus ? 'Activo' : 'Inactivo' }}</p>
     <p><strong>CURP:</strong> {{ data.curp }}</p>
     <p><strong>Nacionalidad:</strong> {{ data.nacionalidad }}</p>
   </div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>CERRAR</button>
+  <button mat-raised-button color="primary" (click)="verPerfilTransaccional()">VER PERFIL TRANSACCIONAL</button>
 </mat-dialog-actions>

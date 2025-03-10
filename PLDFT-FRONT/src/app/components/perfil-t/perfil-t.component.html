@@ -1,0 +1,193 @@
+<div class="container mt-4 mb-5 text-center">
+    <h1>PERFIL TRANSACCIONAL</h1>
+    <form>
+        <div class="row">
+
+            <mat-form-field class="w-100">
+                <mat-label>Nombre</mat-label>
+                <input matInput [value]="clienteData.nombre_cl" readonly>
+            </mat-form-field>
+
+            <!-- Actividad que Realiza -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Actividad que Realiza</mat-label>
+                    <input matInput [value]="clienteData.act_realiza" readonly>
+                    <mat-icon matSuffix>work</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <!-- Persona Física con Actividad Empresarial -->
+            <div class="col-md-4 d-flex align-items-center">
+                <mat-checkbox>¿Es persona Física con Actividad Empresarial?</mat-checkbox>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <!-- Tipo de Servicios -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Servicios</mat-label>
+                    <input matInput [value]="(clienteData.servicios_cl | parseJson) | mapToProperty:'servicio'"
+                        placeholder="DRENAJE, AGUA POTABLE" readonly>
+                    <mat-icon matSuffix>build</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Maneja Cuentas Bancarias -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Maneja Cuentas Bancarias</mat-label>
+                    <mat-select>
+                        <mat-option value="si">Sí</mat-option>
+                        <mat-option value="no">No</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>credit_card</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Finalidad de la Cuenta -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Finalidad de la Cuenta</mat-label>
+                    <input matInput [value]="(clienteData.finalidad_cuenta | parseJson) | mapToProperty:'finalidad'"
+                        placeholder="AHORRO, INVERTIR" readonly>
+                    <mat-icon matSuffix>savings</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <!-- No. Dependientes Económicos -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>No. Dependientes Económicos</mat-label>
+                    <input matInput [value]="clienteData.num_dependientes" readonly>
+                    <mat-icon matSuffix>group</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Estado Civil -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Estado Civil</mat-label>
+                    <input matInput [value]="clienteData.estado_civil" readonly>
+                    <mat-icon matSuffix>favorite</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Régimen Matrimonial -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Régimen Matrimonial</mat-label>
+                    <input matInput [value]="clienteData.regimen_matrimonial" readonly>
+                    <mat-icon matSuffix>gavel</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+
+        
+
+        <div class="row mt-3">
+            <!-- Nivel Estudios Académicos -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Nivel Estudios Académicos</mat-label>
+                    <input matInput [value]="clienteData.nivel_estudios" readonly>
+                    <mat-icon matSuffix>history_edu</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <!-- Profesión -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Profesión</mat-label>
+                    <input matInput [value]="clienteData.profesion" readonly>
+                    <mat-icon matSuffix>work</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Tipo Vivienda -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Tipo Vivienda</mat-label>
+                    <input matInput [value]="clienteData.tipo_vivienda" readonly>
+                    <mat-icon matSuffix>home</mat-icon>
+                </mat-form-field>
+            </div>
+            
+        </div>
+
+        <div class="row mt-3">
+            <!-- Monto aprox. Ahorrar -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Monto aprox. Ahorrar</mat-label>
+                    <input matInput [value]="clienteData.monto_aprox_ahorrar" readonly>
+                    <mat-icon matSuffix>attach_money</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Monto aprox. Retirar -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Monto aprox. Retirar</mat-label>
+                    <input matInput [value]="clienteData.monto_aprox_retirar" readonly>
+                    <mat-icon matSuffix>money_off</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <!-- Movimientos por Mes -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Movimientos por Mes</mat-label>
+                    <input matInput type="number" placeholder="20" />
+                    <mat-icon matSuffix>sync_alt</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+             <!-- Perioricidad de movimientos -->
+             <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Perioricidad de Movimientos</mat-label>
+                    <input matInput [value]="clienteData.periodicidad_movimientos" readonly>
+                    <mat-icon matSuffix>money</mat-icon>
+                </mat-form-field>
+            </div>
+
+        <div class="col-md-4">
+            <!-- Mostrar Vínculo Patrimonial -->
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Vínculo Patrimonial</mat-label>
+                <input matInput [value]="(clienteData.vinculos_adicionales | parseJson) | mapToProperty:'vinculo'"
+                    placeholder="VINCULO PATRIMONIAL" readonly>
+                <mat-icon matSuffix>link</mat-icon>
+            </mat-form-field>
+        </div>
+
+            <!-- Bienes Materiales -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Bienes Materiales</mat-label>
+                    <input matInput placeholder="Ingrese bienes materiales" />
+                    <mat-icon matSuffix>business</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Valor Aproximado -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Valor Aproximado</mat-label>
+                    <input matInput type="number" placeholder="Valor Aprox $" />
+                    <mat-icon matSuffix>request_quote</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>

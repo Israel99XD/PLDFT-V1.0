@@ -14,29 +14,40 @@ public class DataController {
 
     private final String BASE_URL = "http://122.8.186.221:7582";
 
-        // Obtener datos de un cliente específico
-        @GetMapping("/getClienteData/{codigo}/{perfil}")
-        @PreAuthorize("hasAuthority('ROLE_demo')")
-        public ResponseEntity<String> getClienteData(
-                @PathVariable String codigo,
-                @PathVariable String perfil,
-                @RequestHeader("Authorization") String authHeader) {
-    
-            String url = BASE_URL + "/clientes/spsClientesFM/" + codigo + "/" + perfil;
-            return fetchExternalData(url, authHeader);
-        }
-    
-        // Obtener datos de un cliente específico
-        @GetMapping("/getClientesM/{codigo}/{perfil}")
-        @PreAuthorize("hasAuthority('ROLE_demo')")
-        public ResponseEntity<String> getClientesM(
-                @PathVariable String codigo,
-                @PathVariable String perfil,
-                @RequestHeader("Authorization") String authHeader) {
-    
-            String url = BASE_URL + "/clientes/spsClientesFM/" + codigo + "/" + perfil;
-            return fetchExternalData(url, authHeader);
-        }
+    // Obtener datos de un cliente específico
+    @GetMapping("/getClienteData/{codigo}/{perfil}")
+    @PreAuthorize("hasAuthority('ROLE_demo')")
+    public ResponseEntity<String> getClienteData(
+            @PathVariable String codigo,
+            @PathVariable String perfil,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String url = BASE_URL + "/clientes/spsClientesFM/" + codigo + "/" + perfil;
+        return fetchExternalData(url, authHeader);
+    }
+
+    // Obtener datos de un cliente específico
+    @GetMapping("/getClientesM/{codigo}/{perfil}")
+    @PreAuthorize("hasAuthority('ROLE_demo')")
+    public ResponseEntity<String> getClientesM(
+            @PathVariable String codigo,
+            @PathVariable String perfil,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String url = BASE_URL + "/clientes/spsClientesFM/" + codigo + "/" + perfil;
+        return fetchExternalData(url, authHeader);
+    }
+
+    @GetMapping("/getPerfilT/{codigo}/{perfil}")
+    @PreAuthorize("hasAuthority('ROLE_demo')")
+    public ResponseEntity<String> getPerfilT(
+            @PathVariable String codigo,
+            @PathVariable String perfil,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String url = BASE_URL + "/clientes/spsClientesFM/" + codigo + "/" + perfil;
+        return fetchExternalData(url, authHeader);
+    }
 
     // Obtener movimientos del cliente
     @GetMapping("/getMovimientos")

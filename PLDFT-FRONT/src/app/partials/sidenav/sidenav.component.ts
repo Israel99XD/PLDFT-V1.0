@@ -49,9 +49,10 @@ export class SidenavComponent {
       this.router.navigate(['/persona-moral']);
     } else if (tipo === '3') {
       this.router.navigate(['/movimientos']);
-    }
-    else if (tipo === '4') {
+    }else if (tipo === '4') {
       this.router.navigate(['/transacciones']);
+    }else if (tipo === '5') {
+      this.router.navigate(['/perfil-transaccional']);
     }
   }
 

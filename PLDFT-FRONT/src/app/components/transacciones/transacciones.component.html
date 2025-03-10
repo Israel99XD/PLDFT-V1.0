@@ -1,8 +1,8 @@
 <div *ngIf="cargando" class="loading-overlay">
   <mat-spinner></mat-spinner>
 </div>
-<h2>TRANSACCIONES</h2>
-<div class="container mt-2 mb-5">
+<div class="container mt-4 mb-5 text-center">
+  <h1>TRANSACCIONES</h1>
   <mat-form-field>
     <mat-label>FILTRO DE TRANSACCIONES</mat-label>
     <input
@@ -76,7 +76,7 @@
   </div>
   <!-- Paginador -->
   <mat-paginator
-    [pageSizeOptions]="[5, 10, 25]"
+    [pageSizeOptions]="[5, 10, 15]"
     showFirstLastButtons
     aria-label="Paginador de transacciones"
   >
