@@ -77,6 +77,25 @@ public class DataController {
 
     }
 
+    // Método para el tipo de moneda
+    @GetMapping("/getTipoCambio")
+@PreAuthorize("hasAuthority('ROLE_demo')")
+public ResponseEntity<String> getTipoCambio(@RequestHeader("Authorization") String authHeader) {
+    String url = "https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF60653/datos/2025-03-11/2025-03-11";
+
+    // Token de Banxico
+    String banxicoToken = "3fa2dbbeb71b4b6a870ad696beaedc0bb91acab5cd0843d481eefa2da607ae5a";
+
+    // Realizar la petición a la API de Banxico
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Bmx-Token", banxicoToken); // Se agrega el token en los headers
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+
+    ResponseEntity<String> response = restTemplate.exchange(url, org.springframework.http.HttpMethod.GET, entity, String.class);
+    return ResponseEntity.ok(response.getBody());
+}
+
     // Método reutilizable para realizar la petición HTTP externa
     private ResponseEntity<String> fetchExternalData(String url, String authHeader) {
         String token = authHeader.replace("Bearer ", "");

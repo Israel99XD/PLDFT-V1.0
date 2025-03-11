@@ -29,15 +29,29 @@
         <td mat-cell *matCellDef="let row">{{ row.cveMovimiento }}</td>
       </ng-container>
 
-      <!-- Monto -->
+      <!-- Monto en Pesos -->
       <ng-container matColumnDef="monto">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO (MXN)</th>
         <td
           mat-cell
           *matCellDef="let row"
           [ngClass]="{ 'monto-alto': esMontoAlto(row.monto) }"
         >
-          $ {{ row.monto }}
+          {{ row.monto | currency : "MXN" }}
+        </td>
+      </ng-container>
+
+      <!-- Monto en Dólares -->
+      <ng-container matColumnDef="montoUSD">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO (USD)</th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [ngClass]="{ 'monto-alto': esMontoAlto(row.montoUSD) }"
+        >
+          {{
+            row.montoUSD !== "N/A" ? (row.montoUSD | currency : "USD") : "N/A"
+          }}
         </td>
       </ng-container>
 
