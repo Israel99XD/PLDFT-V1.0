@@ -12,18 +12,18 @@ import { ParseJsonPipe } from '../../../parse-json.pipe';
   standalone: true,
   imports: [
     ParseJsonPipe,
-    CommonModule, 
-    MatDialogModule, 
+    CommonModule,
+    MatDialogModule,
     MatButtonModule],
   templateUrl: './info-cliente-m.component.html',
   styleUrl: './info-cliente-m.component.scss'
 })
 export class InfoClienteMComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, 
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
     private dialogRef: MatDialogRef<InfoClienteMComponent> // Inyecta MatDialogRef aquí
-  ) {}
+  ) { }
 
   close(result: boolean) {
     this.dialogRef.close(result);
@@ -32,7 +32,7 @@ export class InfoClienteMComponent {
   verPerfilTransaccional(): void {
     this.dialogRef.close();
     sessionStorage.setItem('clienteData', JSON.stringify(this.data));
-    this.router.navigate(['/perfil-transaccional']);
+    this.router.navigate(['/perfil-transaccional-m']);
   }
-  
+
 }
