@@ -83,13 +83,7 @@ export class ApiService {
     });
 
     return this.http.get(
-<<<<<<< HEAD
       `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`, { headers });
-=======
-      `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`,
-      { headers }
-    );
->>>>>>> 94c7f367319086ef492beace67f14edbde87980a
   }
 
   // **Nuevo método para el perfil transaccional**
@@ -99,7 +93,6 @@ export class ApiService {
       Authorization: `Bearer ${token}`,
     });
 
-<<<<<<< HEAD
     return this.http.get(
       `${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, { headers });
   }
@@ -149,10 +142,4 @@ export class ApiService {
     });
   }
 
-=======
-    return this.http.get(`${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, {
-      headers,
-    });
-  }
->>>>>>> 94c7f367319086ef492beace67f14edbde87980a
 }
