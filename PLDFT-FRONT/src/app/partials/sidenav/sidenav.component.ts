@@ -53,7 +53,10 @@ export class SidenavComponent {
       this.router.navigate(['/transacciones']);
     }else if (tipo === '5') {
       this.router.navigate(['/perfil-transaccional']);
+    }else if (tipo === '6') {
+      this.router.navigate(['/sanction-list']);
     }
+    
   }
 
   ngOnInit(): void {

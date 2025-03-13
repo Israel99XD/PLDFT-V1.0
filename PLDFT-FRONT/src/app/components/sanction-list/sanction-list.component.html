@@ -1,0 +1,23 @@
+<h2>Consulta de Entidades Sancionadas</h2>
+
+<form (ngSubmit)="onSubmit()">
+  <label for="entityId">ID de Entidad:</label>
+  <input id="entityId" type="text" [(ngModel)]="entityId" name="entityId">
+
+  <label for="listName">Lista:</label>
+  <input id="listName" type="text" [(ngModel)]="listName" name="listName">
+
+  <label for="programName">Programa:</label>
+  <input id="programName" type="text" [(ngModel)]="programName" name="programName">
+
+  <button type="submit">Buscar</button>
+</form>
+
+<div *ngIf="errorMessage">
+  <p style="color: red;">{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="result">
+  <h3>Resultados:</h3>
+  <pre>{{ result | json }}</pre>
+</div>
