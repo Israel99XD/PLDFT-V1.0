@@ -11,7 +11,7 @@ export class ApiService {
   private baseUrls = 'https://sanctionslistservice.ofac.treas.gov';
   private apiUrl = 'https://sanctionslistservice.ofac.treas.gov/entities';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Configuración de headers con el encabezado 'Accept: application/json'
   private getHeaders(): HttpHeaders {
@@ -28,7 +28,9 @@ export class ApiService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.baseUrl}/getClienteData/${codigo}/${perfil}`, { headers });
+    return this.http.get(`${this.baseUrl}/getClienteData/${codigo}/${perfil}`, {
+      headers,
+    });
   }
 
   // Método para obtener los clientes del perfil M
@@ -38,7 +40,9 @@ export class ApiService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.baseUrl}/getClientesM/${codigo}/${perfil}`, { headers });
+    return this.http.get(`${this.baseUrl}/getClientesM/${codigo}/${perfil}`, {
+      headers,
+    });
   }
 
   // Método para obtener los movimientos de clientes
@@ -61,6 +65,16 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/getTransacciones`, { headers });
   }
 
+  // Método para obtener el tipo de cambio de moneda desde el backend
+  getTipoCambio(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get(`${this.baseUrl}/getTipoCambio`, { headers });
+  }
+
   // **Nuevo método para contar clientes por perfil**
   contarClientesFisicos(codigo: string, perfil: string): Observable<any> {
     const token = localStorage.getItem('token');
@@ -69,7 +83,13 @@ export class ApiService {
     });
 
     return this.http.get(
+<<<<<<< HEAD
       `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`, { headers });
+=======
+      `${this.baseUrl}/contarClientesFisicos/${codigo}/${perfil}`,
+      { headers }
+    );
+>>>>>>> 94c7f367319086ef492beace67f14edbde87980a
   }
 
   // **Nuevo método para el perfil transaccional**
@@ -79,6 +99,7 @@ export class ApiService {
       Authorization: `Bearer ${token}`,
     });
 
+<<<<<<< HEAD
     return this.http.get(
       `${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, { headers });
   }
@@ -128,4 +149,10 @@ export class ApiService {
     });
   }
 
+=======
+    return this.http.get(`${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, {
+      headers,
+    });
+  }
+>>>>>>> 94c7f367319086ef492beace67f14edbde87980a
 }

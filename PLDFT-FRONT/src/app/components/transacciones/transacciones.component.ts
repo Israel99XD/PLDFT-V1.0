@@ -45,8 +45,12 @@ interface Transaccion {
 export class TransaccionesComponent implements OnInit, AfterViewInit {
   transacciones: any[] = []; // Almacena las transacciones
   montosAnomalos: number[] = []; // Array para almacenar montos anómalos
+  tipoCambio: number = 0;
   jsonCompleto: any; // Guarda el JSON completo recibido
   cargando: boolean = false;
+
+  tipoCambioUSD: number = 0; // Variable para almacenar el tipo de cambio
+  existenTransaccionesUSD: boolean = false; // Flag para mostrar la columna USD
 
   displayedColumnsTransacciones: string[] = [
     'cveMovimiento',
@@ -73,6 +77,7 @@ export class TransaccionesComponent implements OnInit, AfterViewInit {
   // Método del ciclo de vida de Angular, se ejecuta al iniciar el componente
   ngOnInit() {
     this.getTransacciones();
+    this.getTipoCambio();
   }
 
   // Método que se ejecuta después de que la vista se ha inicializado
@@ -84,42 +89,83 @@ export class TransaccionesComponent implements OnInit, AfterViewInit {
   // Almacena transacciones con monto mayor a 300,000
   transaccionesAltas: Transaccion[] = [];
 
+  getTipoCambio() {
+    this.clienteService.getTipoCambio().subscribe((tipoCambio) => {
+      this.tipoCambioUSD = tipoCambio;
+      this.getTransacciones(); // Llamamos después de obtener el tipo de cambio
+    });
+  }
+
   // Método para obtener las transacciones
   getTransacciones() {
     this.cargando = true;
-    this.clienteService.getTransacciones().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) {
-          this.transacciones = data;
-          console.log('Transacciones obtenidas:', this.transacciones);
+    this.clienteService.getTransacciones().subscribe((data) => {
+      if (Array.isArray(data)) {
+        const transacciones = data.map((transaccion: any) => ({
+          ...transaccion,
+          montoUSD: this.tipoCambioUSD
+            ? (transaccion.monto / this.tipoCambioUSD).toFixed(2)
+            : null,
+        }));
 
-          this.transaccionesAltas = this.transacciones.filter(
-            (t) => t.monto > 300000
-          );
-          console.log(
-            'Transacciones mayores a 300,000:',
-            this.transaccionesAltas
-          );
+        this.existenTransaccionesUSD = transacciones.some(
+          (t) => t.montoUSD && parseFloat(t.montoUSD) > 0
+        );
 
-          this.dataSourceTransacciones.data = this.transacciones;
+        this.dataSourceTransacciones.data = transacciones;
 
-          // Mostrar el snackbar si hay transacciones altas
-          this.mostrarNotificacion();
-        } else {
-          console.error('La respuesta de la API no es un array válido:', data);
-        }
-        this.cargando = false;
-      },
-      error: (error) => {
-        console.error('Error al obtener transacciones:', error);
-        this.cargando = false;
-      },
+        // Detectar transacciones inusuales
+        this.transaccionesAltas = transacciones.filter(
+          (t) =>
+            this.esMontoAlto(t.monto) ||
+            this.esMontoAlto(parseFloat(t.montoUSD))
+        );
+
+        // Mostrar alerta si hay transacciones altas
+        this.mostrarNotificacion();
+
+        // Asegurar que la columna 'monto' SIEMPRE esté presente
+        this.displayedColumnsTransacciones = [
+          'cveMovimiento',
+          'monto', // Siempre debe estar
+          ...(this.existenTransaccionesUSD ? ['montoUSD'] : []),
+          'descTipoMov',
+          'fecha',
+        ];
+      } else {
+        console.error(
+          'Error: El backend no devolvió un array de transacciones',
+          data
+        );
+      }
+
+      this.cargando = false;
     });
+  }
+
+  obtenerTransacciones() {
+    this.clienteService.getTransacciones().subscribe(
+      (response) => {
+        this.transacciones = response.map((transaccion: any) => ({
+          ...transaccion,
+          montoUSD:
+            this.tipoCambio > 0
+              ? (transaccion.monto / this.tipoCambio).toFixed(2)
+              : 'N/A', // Conversión a dólares
+        }));
+      },
+      (error) => {
+        console.error('Error al obtener transacciones', error);
+      }
+    );
   }
 
   // Verificar que el monto no sobrepase el limite establecido
   esMontoAlto(monto: number): boolean {
-    return monto > 300000;
+    if (!monto || this.tipoCambioUSD === 0) return false;
+
+    const montoEnUSD = monto / this.tipoCambioUSD;
+    return montoEnUSD > 7500 || monto > 350000; // Compara bien ambos valores
   }
 
   mostrarNotificacion() {
