@@ -11,7 +11,7 @@ export class ParseJsonPipe implements PipeTransform {
 
   transform(value: any): any {
     // Imprimimos en consola el valor recibido para depuración
-   // console.log("Valor recibido en el Pipe:", value);
+    // console.log("Valor recibido en el Pipe:", value);
 
     // Verificamos si el valor es un string
     if (typeof value === 'string') {

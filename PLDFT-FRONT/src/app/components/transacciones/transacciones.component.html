@@ -5,22 +5,12 @@
   <h1>TRANSACCIONES</h1>
   <mat-form-field>
     <mat-label>FILTRO DE TRANSACCIONES</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event, 'transacciones')"
-      placeholder="BUSCAR POR MONTO Y FECHA"
-      #inputUser
-      aria-label="Filtro de transacciones"
-    />
+    <input matInput (keyup)="applyFilter($event, 'transacciones')" placeholder="BUSCAR POR MONTO Y FECHA" #inputUser
+      aria-label="Filtro de transacciones" />
   </mat-form-field>
 
   <div class="mat-elevation-z8 table-responsive">
-    <table
-      mat-table
-      [dataSource]="dataSourceTransacciones"
-      matSort
-      class="custom-table"
-    >
+    <table mat-table [dataSource]="dataSourceTransacciones" matSort class="custom-table">
       <!-- Clave Movimiento -->
       <ng-container matColumnDef="cveMovimiento">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -32,11 +22,7 @@
       <!-- Monto en Pesos -->
       <ng-container matColumnDef="monto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO (MXN)</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          [ngClass]="{ 'monto-alto': esMontoAlto(row.monto) }"
-        >
+        <td mat-cell *matCellDef="let row" [ngClass]="{ 'monto-alto': esMontoAlto(row.monto) }">
           {{ row.monto | currency : "MXN" }}
         </td>
       </ng-container>
@@ -44,13 +30,9 @@
       <!-- Monto en Dólares -->
       <ng-container matColumnDef="montoUSD">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>MONTO (USD)</th>
-        <td
-          mat-cell
-          *matCellDef="let row"
-          [ngClass]="{ 'monto-alto': esMontoAlto(row.montoUSD) }"
-        >
+        <td mat-cell *matCellDef="let row" [ngClass]="{ 'monto-alto': esMontoAlto(row.montoUSD) }">
           {{
-            row.montoUSD !== "N/A" ? (row.montoUSD | currency : "USD") : "N/A"
+          row.montoUSD !== "N/A" ? (row.montoUSD | currency : "USD") : "N/A"
           }}
         </td>
       </ng-container>
@@ -75,10 +57,7 @@
 
       <!-- Encabezado y Filas -->
       <tr mat-header-row *matHeaderRowDef="displayedColumnsTransacciones"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumnsTransacciones"
-      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsTransacciones"></tr>
 
       <!-- Mensaje cuando no hay datos -->
       <tr class="mat-row" *matNoDataRow>
@@ -89,10 +68,6 @@
     </table>
   </div>
   <!-- Paginador -->
-  <mat-paginator
-    [pageSizeOptions]="[5, 10, 15]"
-    showFirstLastButtons
-    aria-label="Paginador de transacciones"
-  >
+  <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons aria-label="Paginador de transacciones">
   </mat-paginator>
 </div>

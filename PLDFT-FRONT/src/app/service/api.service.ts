@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import * as xml2js from 'xml2js'; // Asegúrate de esta importación
 
 @Injectable({
@@ -8,16 +8,43 @@ import * as xml2js from 'xml2js'; // Asegúrate de esta importación
 })
 export class ApiService {
   private baseUrl = 'http://localhost:8080'; // URL del backend
-  private baseUrls = 'https://sanctionslistservice.ofac.treas.gov';
-  private apiUrl = 'https://sanctionslistservice.ofac.treas.gov/entities';
+  private apiUrl = 'https://sanctionslistservice.ofac.treas.gov';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Configuración de headers con el encabezado 'Accept: application/json'
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json', // Asegura que se espera JSON
+    });
+  }
+
+  private parseXmlToJson(xml: string): Observable<any> {
+    return new Observable((observer) => {
+      xml2js.parseString(xml, { explicitArray: false }, (err, result) => {
+        if (err) {
+          observer.error('Error al procesar XML');
+        } else {
+          observer.next(result);
+          observer.complete();
+        }
+      });
+    });
+  }
+
+
+  private getJsonResponse(url: string): Observable<any> {
+    return new Observable((observer) => {
+      this.http.get(url, { headers: this.getHeaders(), responseType: 'text' }).subscribe(
+        (xmlResponse) => {
+          this.parseXmlToJson(xmlResponse).subscribe(
+            (json) => observer.next(json),
+            (error) => observer.error(error)
+          );
+        },
+        (error) => observer.error('Error al obtener datos')
+      );
     });
   }
 
@@ -99,49 +126,52 @@ export class ApiService {
       `${this.baseUrl}/getPerfilT/${codigo}/${perfil}`, { headers });
   }
 
-  // Obtener todas las entidades
+  getAllCountries(): Observable<any> {
+    return this.getJsonResponse('https://restcountries.com/v3.1/independent?status=true&fields=languages,capital'); //para información geográfica y económica.
+  }
+
   getEntities(): Observable<any> {
-    return this.http.get(`${this.baseUrls}/entities`, { headers: this.getHeaders() });
+    return this.getJsonResponse(`${this.apiUrl}/entities`);
   }
 
-  // Obtener entidad por ID
+  getPrograms(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/sanctions-programs`);
+  }
+
   getEntityById(entityId: string): Observable<any> {
-    return this.http.get(`${this.baseUrls}/entities/${entityId}`, { headers: this.getHeaders() });
+    return this.getJsonResponse(`${this.apiUrl}/entities?id=${entityId}`);
   }
 
-  // Buscar entidades por lista
   getEntitiesByList(listName: string): Observable<any> {
-    return this.http.get(`${this.baseUrls}/entities?list=${listName}`, { headers: this.getHeaders() });
+    return this.getJsonResponse(`${this.apiUrl}/entities?list=${listName}`);
   }
+  
+  getEntitiesByName(entityName: string) {
+    return this.http.get<any>(`${this.apiUrl}/entities/search?name=${entityName}`);
+  }
+  
 
-  // Buscar entidades por programa
   getEntitiesByProgram(programName: string): Observable<any> {
-    return this.http.get(`${this.baseUrls}/entities?program=${programName}`, { headers: this.getHeaders() });
+    return this.getJsonResponse(`${this.apiUrl}/entities?program=${programName}`);
   }
 
-  // Verificar si la API está funcionando
   checkServiceStatus(): Observable<any> {
-    return this.http.get(`${this.baseUrls}/alive`, { headers: this.getHeaders() });
+    return this.getJsonResponse(`${this.apiUrl}/alive`);
   }
 
   getEntityByIdAndProgram(entityId: string, programName: string): Observable<any> {
-    const url = `${this.apiUrl}?Id=${entityId}&Program=${programName}`;
-    return new Observable<any>((observer) => {
-      this.http.get(url, { headers: new HttpHeaders(), responseType: 'text' }).subscribe(
-        (xmlResponse) => {
-          xml2js.parseString(xmlResponse, { explicitArray: false }, (err, result) => {
-            if (err) {
-              observer.error('Error al procesar XML');
-            } else {
-              observer.next(result); // Devuelve el JSON convertido
-            }
-          });
-        },
-        (error) => {
-          observer.error('Error al obtener datos');
-        }
-      );
-    });
+    return this.getJsonResponse(`${this.apiUrl}/entities?Id=${entityId}&Program=${programName}`);
   }
 
+  getEntitiesByType(entityType: string): Observable<any> {
+    return this.getJsonResponse(`${this.apiUrl}/entities?type=${entityType}`);
+  }
+
+  getEntitiesByAddress(address: string): Observable<any> {
+    return this.getJsonResponse(`${this.apiUrl}/entities?address=${address}`);
+  }
+
+  getEntityByListAndProgram(listName: string, programName: string): Observable<any> {
+    return this.getJsonResponse(`${this.apiUrl}/entities?list=${listName}&program=${programName}`);
+  }
 }
