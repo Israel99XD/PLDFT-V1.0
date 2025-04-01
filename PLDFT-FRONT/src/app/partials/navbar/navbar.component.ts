@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { LogoutComponent } from '../logout/logout.component';
+import { InfoEmpComponent } from '../../components/modales/info-emp/info-emp.component';
 
 const MATERIAL_MODULE = [
   MatIconModule,
@@ -29,6 +30,8 @@ const MATERIAL_MODULE = [
   template: `
     <mat-toolbar>
     <img src="LOGO2.png" alt="Logo PLD/FT" class="logonav mb-2" />
+    
+    <mat-icon (click)="infoEmpresa()"><span class="material-symbols-outlined ayuda">help</span></mat-icon>
       <!-- Espaciador para separar los íconos -->
       <span class="spacer"></span>
 
@@ -60,6 +63,10 @@ const MATERIAL_MODULE = [
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+    }
+
+    .ayuda{
+      cursor:pointer;
     }
 
     .logonav {
@@ -118,6 +125,16 @@ export class NavbarComponent {
 
   logout() {
     const dialogRef = this.dialog.open(LogoutComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.oauthService.logOut();
+      }
+    });
+  }
+
+  infoEmpresa() {
+    const dialogRef = this.dialog.open(InfoEmpComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {

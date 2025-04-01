@@ -17,6 +17,12 @@
   <button mat-menu-item (click)="navegar('4')">
     <mat-icon>analytics</mat-icon> Transacciones
   </button>
+  <button mat-menu-item (click)="navegar('6')">
+    <mat-icon>list_alt</mat-icon> Lista de sanciones
+  </button>
+  <button mat-menu-item (click)="navegar('7')">
+    <mat-icon>list_alt</mat-icon> Lista de sanciones
+  </button>
 </mat-menu>
 
 <!-- Sidebar (Visible solo en pantallas medianas y grandes) -->
@@ -48,6 +54,10 @@
         <button class="w-100 mb-3 " style="all: unset; cursor: pointer;" (click)="navegar('6')">
           <mat-icon>list_alt</mat-icon>
           LISTA DE SANCIONES DE LA OFAC
+        </button>
+        <button class="w-100 mb-3 " style="all: unset; cursor: pointer;" (click)="navegar('7')">
+          <mat-icon>map</mat-icon>
+          RIESGO POR ESTADO EN HOMICIDIOS DOLOSOS
         </button>
       </mat-expansion-panel>
     </mat-accordion>

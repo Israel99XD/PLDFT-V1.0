@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from './partials/navbar/navbar.component';
 import { FooterComponent } from './partials/footer/footer.component';
 import { SidenavComponent } from './partials/sidenav/sidenav.component';
+import { MapaComponent } from './components/mapa/mapa.component';
+
 
 @Component({
   selector: 'app-root',
@@ -13,11 +13,12 @@ import { SidenavComponent } from './partials/sidenav/sidenav.component';
     RouterOutlet,
     NavbarComponent,
     SidenavComponent,
-    FooterComponent
+    FooterComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'PLDFT-FRONT';
+  
 }

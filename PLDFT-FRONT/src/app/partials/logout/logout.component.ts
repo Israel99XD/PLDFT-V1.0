@@ -9,15 +9,13 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
   //templateUrl: './logoutconfirm.component.html',
   template: ` <h2 mat-dialog-title>Cerrar sesión</h2>
   <mat-dialog-content
-    >¿Estás seguro que deseas cerrar sesión?</mat-dialog-content
-  >
+    >¿Estás seguro que deseas cerrar sesión?</mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button (click)="close(false)">Cancelar</button>
     <button mat-button color="warn" (click)="close(true)">
       Aceptar
     </button>
-  </mat-dialog-actions>
-`,
+  </mat-dialog-actions>`
 })
 export class LogoutComponent {
   constructor(private dialogRef: MatDialogRef<LogoutComponent>) { }

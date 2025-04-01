@@ -24,8 +24,7 @@ const ANGULAR_MODULES = [
   MatDividerModule,
   MatIconModule,
   MatListModule,
-  MatMenuModule
-
+  MatMenuModule,
 ]
 
 @Component({
@@ -45,18 +44,19 @@ export class SidenavComponent {
   navegar(tipo: string) {
     if (tipo === '1') {
       this.router.navigate(['/persona-fisica']);
-    } else if (tipo === '2') {
+    } if (tipo === '2') {
       this.router.navigate(['/persona-moral']);
-    } else if (tipo === '3') {
+    } if (tipo === '3') {
       this.router.navigate(['/movimientos']);
-    }else if (tipo === '4') {
+    } if (tipo === '4') {
       this.router.navigate(['/transacciones']);
-    }else if (tipo === '5') {
+    } if (tipo === '5') {
       this.router.navigate(['/perfil-transaccional']);
-    }else if (tipo === '6') {
+    } if (tipo === '6') {
       this.router.navigate(['/sanction-list']);
+    }if (tipo === '7') {
+      this.router.navigate(['/map']);
     }
-    
   }
 
   ngOnInit(): void {

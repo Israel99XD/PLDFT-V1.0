@@ -7,6 +7,7 @@ import { TransaccionesComponent } from './components/transacciones/transacciones
 import { PerfilTComponent } from './components/perfil-t/perfil-t.component';
 import { PerfilTMComponent } from './components/perfil-t-m/perfil-t-m.component';
 import { SanctionListComponent } from './components/sanction-list/sanction-list.component';
+import { MapaComponent } from './components/mapa/mapa.component';
 
 
 export const routes: Routes = [
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'perfil-transaccional', component: PerfilTComponent, title: 'Perfil-transaccional', canActivate: [AuthGuard] },
     { path: 'perfil-transaccional-m', component: PerfilTMComponent, title: 'Perfil-transaccional-m', canActivate: [AuthGuard] },
     { path: 'sanction-list', component: SanctionListComponent, title: 'sanction-list', canActivate: [AuthGuard] },
+    { path: 'map', component: MapaComponent, title: 'map', canActivate: [AuthGuard] },
 
 ];
