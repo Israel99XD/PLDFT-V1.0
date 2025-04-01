@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort'; // Componente para ordenar tablas de Material
 import { MatTableDataSource, MatTableModule } from '@angular/material/table'; // Fuente de datos para las tablas de Material
 import { OAuthService } from 'angular-oauth2-oidc'; // Servicio de autenticación OAuth
+import emailjs from 'emailjs-com';
 import { ParseJsonPipe } from '../../parse-json.pipe'; // Pipe personalizado para parsear JSON
 import { ApiService } from '../../service/api.service';
 import { InfoClienteComponent } from '../modales/info-cliente/info-cliente.component'; // Modal para mostrar información del cliente
@@ -115,11 +116,15 @@ export class TransaccionesComponent implements OnInit, AfterViewInit {
         this.dataSourceTransacciones.data = transacciones;
 
         // Detectar transacciones inusuales
-        this.transaccionesAltas = transacciones.filter(
-          (t) =>
+        this.transaccionesAltas = transacciones.filter((t) => {
+          const montoEsAlto =
             this.esMontoAlto(t.monto) ||
-            this.esMontoAlto(parseFloat(t.montoUSD))
-        );
+            this.esMontoAlto(parseFloat(t.montoUSD));
+          if (montoEsAlto) {
+            this.montosAnomalos.push(t); // Almacena la transacción completa en el array
+          }
+          return montoEsAlto;
+        });
 
         // Mostrar alerta si hay transacciones altas
         this.mostrarNotificacion();
@@ -168,18 +173,68 @@ export class TransaccionesComponent implements OnInit, AfterViewInit {
     return montoEnUSD > 7500 || monto > 350000; // Compara bien ambos valores
   }
 
+  // Método para enviar el correo a través de EmailJS
+  enviarCorreoTransaccionesAnomalias() {
+    if (this.transaccionesAltas.length > 0) {
+      const transaccionesDetalle = this.transaccionesAltas
+        .map((t) => {
+          return `
+            Movimiento: ${t.cveMovimiento}
+            Monto: ${t.monto} ${t.descTipoMov}
+            Fecha: ${t.fecha}
+          `;
+        })
+        .join('\n\n');
+
+      const emailParams = {
+        to_name: 'Nombre del destinatario',
+        from_name: 'Tu aplicación',
+        message: `Se han detectado las siguientes transacciones inusuales:\n\n${transaccionesDetalle}`,
+      };
+
+      emailjs
+        .send(
+          'service_8m6gjei', // ID de tu servicio en EmailJS
+          'template_hkprw8u', // ID de tu template en EmailJS
+          emailParams,
+          'b3srXDyy9_4z7wxUO' // Tu Public Key de EmailJS
+        )
+        .then(
+          (response) => {
+            console.log('Correo enviado exitosamente:', response);
+            this.snackBar.open('Correo enviado con éxito', 'Cerrar', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          },
+          (error) => {
+            console.error('Error al enviar el correo:', error);
+            this.snackBar.open('Error al enviar el correo', 'Cerrar', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          }
+        );
+    }
+  }
+
   mostrarNotificacion() {
     if (this.transaccionesAltas.length > 0) {
       this.snackBar.open(
         `Se han detectado ${this.transaccionesAltas.length} transacciones inusuales`,
         'Cerrar',
         {
-          duration: 5000, // Duración en milisegundos
-          horizontalPosition: 'center', // Posición horizontal
-          verticalPosition: 'top', // Posición vertical
-          panelClass: ['snackbar-alerta'], // Clase CSS personalizada
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-alerta'],
         }
       );
+
+      // Llamar al método de envío de correo
+      this.enviarCorreoTransaccionesAnomalias(); // Envía el correo
     }
   }
 
