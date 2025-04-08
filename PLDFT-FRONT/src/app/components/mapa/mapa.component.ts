@@ -2,27 +2,38 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Papa from 'papaparse';
 import * as L from 'leaflet';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
+
+// Interfaz para definir las coordenadas geográficas (latitud y longitud)
 interface Coordenadas {
   lat: number;
   lon: number;
 }
 
+// Interfaz que describe la estructura de los datos del CSV
 interface CSVData {
-  estado: any;
-  Entidad: string;
-  'Tipo de delito': string;
+  "Año": string;
+  "Clave_Ent": string;
+  "Entidad": string;
+  "Bien jurídico afectado": string;
+  "Tipo de delito": string;
+  "Subtipo de delito": string;
+  "Modalidad": string;
 }
 
+// Definición de un icono personalizado para los marcadores en el mapa
 const iconoPersonalizado = L.icon({
-  iconUrl: 'assets/marker-icon.png',
-  shadowUrl: 'assets/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  iconUrl: 'assets/marker-icon.png', // URL del ícono
+  shadowUrl: 'assets/marker-shadow.png', // URL de la sombra del marcador
+  iconSize: [25, 41], // Tamaño del ícono
+  iconAnchor: [12, 41], // Anclaje del ícono
+  popupAnchor: [1, -34], // Ubicación del pop-up respecto al ícono
+  shadowSize: [41, 41] // Tamaño de la sombra
 });
 
+// Coordenadas geográficas de los estados de México
 const coordenadasEstadosRaw: { [key: string]: Coordenadas } = {
   "aguascalientes": { lat: 21.8853, lon: -102.2916 },
   "baja california": { lat: 32.6548, lon: -115.4523 },
@@ -59,6 +70,7 @@ const coordenadasEstadosRaw: { [key: string]: Coordenadas } = {
 };
 
 
+// Conversión del objeto de coordenadas en un objeto inmutable
 const coordenadasEstados: { [key: string]: Coordenadas } = Object.keys(coordenadasEstadosRaw).reduce((acc, estado) => {
   acc[estado] = coordenadasEstadosRaw[estado];
   return acc;
@@ -67,28 +79,31 @@ const coordenadasEstados: { [key: string]: Coordenadas } = Object.keys(coordenad
 @Component({
   selector: 'app-mapa',
   standalone: true,
-  imports: [ CommonModule], 
+  imports: [CommonModule],
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
 export class MapaComponent implements OnInit, AfterViewInit {
-  datosCSV: CSVData[] = [];
-  mapa: any;
-  datosAgrupados: { [estado: string]: CSVData[]; } | undefined;
-  delitos: any;
+  // Propiedades del componente
+  datosCSV: CSVData[] = []; // Almacena los datos leídos del CSV
+  mapa: any; // Variable que contiene el objeto mapa de Leaflet
+  datosAgrupados: { [estado: string]: CSVData[]; } | undefined; // Datos agrupados por estado
+  delitos: any; // Información sobre delitos agrupados
 
   constructor() { }
 
   ngOnInit() {
-    this.cargarCSV();
+    this.cargarCSV()
   }
 
   ngAfterViewInit() {
     this.inicializarMapa();
   }
 
+  // Método para inicializar el mapa
   inicializarMapa() {
-    this.mapa = L.map('mapa').setView([23.6345, -102.5528], 6); // Inicia el mapa en la posición central de México
+    // Se crea un mapa centrado en México
+    this.mapa = L.map('mapa').setView([23.6345, -102.5528], 6); // Latitud y longitud central de México
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
@@ -100,74 +115,154 @@ export class MapaComponent implements OnInit, AfterViewInit {
       const response = await fetch('assets/IDEFC_NM_feb25.csv');
       if (!response.ok) throw new Error('No se pudo cargar el archivo CSV');
 
-      const csvText = await response.text();
+      const csvText = await response.text(); // Convierte la respuesta en texto
 
+      // Usamos la librería PapaParse para procesar el CSV
       Papa.parse(csvText, {
-        header: true,
-        dynamicTyping: true,
+        header: true, // El primer renglón contiene los nombres de las columnas
+        dynamicTyping: true, // Convierte automáticamente los tipos de datos
         complete: (result) => {
-          this.datosCSV = result.data as CSVData[];
+          if (!result.data || result.data.length === 0) {
+            console.error('El archivo CSV está vacío.');
+            return;
+          }
+          this.datosCSV = result.data as CSVData[]; // Almacena los datos del CSV en la propiedad
           console.log("Datos CSV cargados:", this.datosCSV);
-          this.agruparDelitosPorEstado();
+          this.agruparDelitosPorEstado(); // Llama a la función para agrupar los delitos por estado
         },
         error: (error: any) => {
           console.error("Error al procesar el CSV:", error);
         },
-        encoding: "UTF-8"
+        encoding: "UTF-8" // Establece la codificación
       });
+
     } catch (error) {
       console.error("Error al obtener el archivo CSV:", error);
     }
   }
 
+  /*
+  // Agrupa los delitos por estado
   agruparDelitosPorEstado() {
-    const delitosPorEstado: { [estado: string]: string[] } = {};
-  
-    this.datosCSV.forEach((fila) => {
-      const estado = fila.Entidad ? this.normalizarTexto(String(fila.Entidad)) : "desconocido";
-  
-      if (!delitosPorEstado[estado]) {
-        delitosPorEstado[estado] = [];
-      }
-  
-      const tipoDeDelito = fila['Tipo de delito'];
-      if (tipoDeDelito && !delitosPorEstado[estado].includes(tipoDeDelito)) {
-        delitosPorEstado[estado].push(tipoDeDelito);
-      }
-    });
-  
-    this.marcarEstados(delitosPorEstado);
-  }
-  
+    const delitosPorEstado: { [estado: string]: Set<string> } = {}; // Usa un Set para evitar duplicados
 
+    this.datosCSV.forEach((fila) => {
+      if (!fila.Entidad || !fila['Subtipo de delito']) return; // Salta filas vacías
+
+      const estado = this.normalizarTexto(String(fila.Entidad)); // Normaliza el nombre del estado
+      const subtipoDelito = String(fila['Subtipo de delito']); // Obtiene el subtipo de delito
+
+      // Si no existe el estado en el objeto, lo inicializa
+      if (!delitosPorEstado[estado]) {
+        delitosPorEstado[estado] = new Set();
+      }
+
+      // Añade el subtipo de delito al Set para evitar duplicados
+      delitosPorEstado[estado].add(subtipoDelito);
+    });
+
+    // Convierte los Set en arrays antes de pasarlos
+    const delitosPorEstadoArray: { [estado: string]: string[] } = {};
+    Object.keys(delitosPorEstado).forEach((estado) => {
+      delitosPorEstadoArray[estado] = Array.from(delitosPorEstado[estado]);
+    });
+
+    // Llama a la función para marcar los estados en el mapa
+    this.marcarEstados(delitosPorEstadoArray);
+  }
+*/
+
+  // Función para agrupar los delitos por estado y asegurarse de que los subtipos de delitos no se dupliquen.
+  public agruparDelitosPorEstado(): void {
+    const delitosPorEstado: { [estado: string]: Set<string> } = {}; // Usa un Set para evitar duplicados.
+
+    this.datosCSV.forEach((fila) => {
+      const estado = this.normalizarTexto(String(fila.Entidad));
+      const subtipoDelito = this.normalizarTexto(String(fila['Subtipo de delito']));
+      if (!estado || !subtipoDelito) return; // Salta filas vacías.
+      // Si no existe el estado en el objeto, lo inicializa.
+      if (!delitosPorEstado[estado]) {
+        delitosPorEstado[estado] = new Set();
+      }
+
+      // Añade el subtipo de delito al Set para evitar duplicados.
+      delitosPorEstado[estado].add(subtipoDelito);
+    });
+
+    // Convierte los Set en arrays antes de pasarlos.
+    const delitosPorEstadoArray: { [estado: string]: string[] } = {};
+    Object.keys(delitosPorEstado).forEach((estado) => {
+      delitosPorEstadoArray[estado] = Array.from(delitosPorEstado[estado]);
+    });
+
+    // Llama a la función para marcar los estados en el mapa (debe ser implementada según el caso de uso).
+    this.marcarEstados(delitosPorEstadoArray);
+  }
+
+  /*
+    // Marca los estados en el mapa con los delitos correspondientes
+    marcarEstados(delitosPorEstado: { [key: string]: string[] }) {
+      Object.keys(delitosPorEstado).forEach((estado) => {
+        const coordenadas = coordenadasEstados[estado]; // Obtiene las coordenadas del estado
+  
+        if (coordenadas) {
+          const delitosLista = delitosPorEstado[estado].join("<br>"); // Convierte los delitos en una lista HTML
+  
+          // Contenido del popup que se mostrará al hacer clic en el marcador
+          const contenidoPopup = `
+            <b>${estado.toUpperCase()}</b><br>
+            <div class="delitos-container">
+              <b>Subtipos de delitos:</b><br>${delitosLista}
+            </div>
+          `;
+  
+          // Crea un marcador en las coordenadas correspondientes y lo añade al mapa
+          L.marker([coordenadas.lat, coordenadas.lon], { icon: iconoPersonalizado })
+            .addTo(this.mapa) // Añade el marcador al mapa
+            .bindPopup(contenidoPopup); // Añade el contenido al popup del marcador
+        } else {
+          console.warn(`No se encontraron coordenadas para: ${estado}`); // Si no hay coordenadas para un estado, muestra advertencia
+        }
+      });
+    }
+  */
+
+  // Marca los estados en el mapa con los delitos correspondientes
   marcarEstados(delitosPorEstado: { [key: string]: string[] }) {
     Object.keys(delitosPorEstado).forEach((estado) => {
-      const coordenadas = coordenadasEstados[estado];
-      if (coordenadas) {
-        const delitos = delitosPorEstado[estado].map(delito => `<br>• ${this.normalizarTexto(delito)}`).join("");
+      const coordenadas = coordenadasEstados[estado]; // Obtiene las coordenadas del estado
 
+      if (coordenadas) {
+        const delitosLista = delitosPorEstado[estado].join("<br>"); // Convierte los delitos en una lista HTML
+
+        // Contenido del popup que se mostrará al hacer clic en el marcador
         const contenidoPopup = `
           <b>${estado.toUpperCase()}</b><br>
-          <div class="delitos-container">
-            Delitos:${delitos}
+          <div class= "delitos-container">
+            <b> Subtipos de delitos:</b><br>${delitosLista}
           </div>
         `;
-
+        const popup = L.popup({
+          maxWidth: 400,
+          maxHeight: 200
+        }).setContent(contenidoPopup);
+        // Crea un marcador en las coordenadas correspondientes y lo añade al mapa
         L.marker([coordenadas.lat, coordenadas.lon], { icon: iconoPersonalizado })
-          .addTo(this.mapa)
-          .bindPopup(contenidoPopup);
+          .addTo(this.mapa) // Añade el marcador al mapa
+          .bindPopup(popup); // Añade el contenido al popup del marcador
       } else {
-        console.warn(`No se encontraron coordenadas para: ${estado}`);
+        console.warn(`No se encontraron coordenadas para: ${estado}`); // Si no hay coordenadas para un estado, muestra advertencia
       }
     });
   }
 
+  // Normaliza un texto (eliminando acentos y convirtiendo a minúsculas)
   normalizarTexto(texto: string): string {
     return texto
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/\s+/g, " ")
-      .trim();
+      .normalize("NFD") // Normaliza el texto a forma canónica de descomposición
+      .replace(/[\u0300-\u036f]/g, "") // Elimina los acentos y diacríticos
+      .toLowerCase() // Convierte todo a minúsculas
+      .replace(/\s+/g, " ") // Sustituye múltiples espacios por uno solo
+      .trim(); // Elimina los espacios al inicio y al final
   }
 }

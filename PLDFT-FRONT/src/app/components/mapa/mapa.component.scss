@@ -1,0 +1,7 @@
+.custom-popup .leaflet-popup-content-wrapper {
+  max-height: 300px;  // Ajusta la altura máxima del contenido del popup
+  overflow-y: auto;  // Habilita el desplazamiento vertical si es necesario
+}
+.custom-popup .leaflet-popup-tip-container {
+  width: 200px;  // Puede ajustar también el ancho de la punta si es necesario
+}
